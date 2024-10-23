@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabrieldev.data.vo.v1.PersonVO;
+import com.gabrieldev.model.Person;
 import com.gabrieldev.services.PersonServices;
 
 @RestController
@@ -27,21 +27,21 @@ public class PersonController {
 	private PersonServices service;
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PersonVO findById(@PathVariable Long id) {
+	public Person findById(@PathVariable Long id) {
 		return service.findById(id);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<PersonVO> findAll() {
+	public List<Person> findAll() {
 		return service.findAll();
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public PersonVO create(@RequestBody PersonVO person) {
+	public Person create(@RequestBody Person person) {
 		return service.create(person);
 	}
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public PersonVO update(@RequestBody PersonVO person) {
+	public Person update(@RequestBody Person person) {
 		return service.update(person);
 	}
 	

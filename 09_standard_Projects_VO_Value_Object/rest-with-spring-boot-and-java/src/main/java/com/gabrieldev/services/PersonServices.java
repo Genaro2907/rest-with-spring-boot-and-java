@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gabrieldev.data.vo.v1.PersonVO;
 import com.gabrieldev.exceptions.ResourceNotFoundException;
-import com.gabrieldev.mapper.GabrielMapper;
 import com.gabrieldev.model.Person;
 import com.gabrieldev.repositories.PersonRepository;
 
@@ -23,34 +21,29 @@ public class PersonServices {
 	PersonRepository repository;
 	
 	
-	public List<PersonVO> findAll() {
+	public List<Person> findAll() {
 		logger.info("Finding all People!");
-		return GabrielMapper.parseListObjects(repository.findAll(), PersonVO.class) ;
+		return repository.findAll();
 	}
 	
-	public PersonVO findById(Long id) {
+	public Person findById(Long id) {
 		logger.info("Finding one person!");
-		var entity =  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-		return GabrielMapper.parseObject(entity, PersonVO.class);
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 	}
 	
-	public PersonVO create(PersonVO person) {
+	public Person create(Person person) {
 		logger.info("Created one person!");
-		var entity = GabrielMapper.parseObject(person, Person.class);
-		var vo = GabrielMapper.parseObject(repository.save(entity), PersonVO.class);
-		return vo;
-		
+		return repository.save(person); 
 	}
 	
-	public PersonVO update(PersonVO person) {
+	public Person update(Person person) {
 		logger.info("Updating one person!");
 		var entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
 		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
-		var vo = GabrielMapper.parseObject(repository.save(entity), PersonVO.class);
-		return vo;  
+		return repository.save(person);  
 	}
 	public void delete(Long id) {
 		logger.info("Deleting one person!");
