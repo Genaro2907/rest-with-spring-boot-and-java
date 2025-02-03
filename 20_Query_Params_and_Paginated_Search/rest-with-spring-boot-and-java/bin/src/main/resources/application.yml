@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot?useTimezone=true&serverTimezone=UTC
     username: root
-    password: 1234567
+    password: 
   jpa:
     hibernate:
       ddl-auto: update
