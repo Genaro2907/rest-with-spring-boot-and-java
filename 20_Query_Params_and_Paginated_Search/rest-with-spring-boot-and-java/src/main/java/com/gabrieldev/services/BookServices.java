@@ -3,10 +3,14 @@ package com.gabrieldev.services;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import com.gabrieldev.controllers.BookController;
@@ -25,15 +29,21 @@ public class BookServices {
 	
 	@Autowired
 	BookRepository repository;
+	
+	@Autowired
+	PagedResourcesAssembler<BookVO> assembler;
 
-	public List<BookVO> findAll() {
+	public PagedModel<EntityModel<BookVO>> findAll(Pageable pageable) {
 
 		logger.info("Finding all book!");
-		var books = GabrielMapper.parseListObjects(repository.findAll(), BookVO.class);
-		books
-			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
-		return books;
+		
+		var booksPage = repository.findAll(pageable);
+		var booksVosPage = booksPage.map(p -> GabrielMapper.parseObject(p, BookVO.class));
+		booksVosPage.map(
+				p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
+		
+		Link link = linkTo(methodOn(BookController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+		return assembler.toModel(booksVosPage, link );
 	}
 
 	public BookVO findById(Long id) {
