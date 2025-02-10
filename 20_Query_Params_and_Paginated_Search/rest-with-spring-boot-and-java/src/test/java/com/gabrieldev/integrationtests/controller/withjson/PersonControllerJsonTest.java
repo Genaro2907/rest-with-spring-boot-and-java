@@ -25,6 +25,7 @@ import com.gabrieldev.data.vo.v1.security.TokenVO;
 import com.gabrieldev.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.gabrieldev.integrationtests.vo.AccountCredentialsVO;
 import com.gabrieldev.integrationtests.vo.PersonVO;
+import com.gabrieldev.integrationtests.vo.wrappers.WrapperPersonVO;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -244,8 +245,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest{
 				.asString();
 					//.as(new TypeRef<List<PersonVO>>() {});
 		
-		List<PersonVO> people = objectMapper.readValue(content, new TypeReference<List<PersonVO>>() {});
-
+		WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+		var people = wrapper.getEmbedded().getPersons();
 		PersonVO foundPersonOne = people.get(0);
 		person = foundPersonOne;
 		
