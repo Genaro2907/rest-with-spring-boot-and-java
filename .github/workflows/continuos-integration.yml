@@ -36,12 +36,8 @@ jobs:
       
     - name: Push to Docker Hub Container registry
       run: |
-        docker tag ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:latest ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:${{ github.run_d }}
+        docker tag ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-erudio:latest ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-erudio:${{ github.run_id }}
 
-        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:${{ github.run_d }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-erudio:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-erudio:latest
 
-        
-    
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
