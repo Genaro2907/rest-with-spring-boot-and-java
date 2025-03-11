@@ -14,7 +14,7 @@ public class OpenApiConfig {
 	OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("RESTful API with Java and SpringBoot 3")
+						.title("RESTful API with Java and SpringBoot 3 - Foo Bar")
 						.version("v1")
 						.description("Curso de SpringBoot")
 						.termsOfService("https://github.com/Genaro2907")
